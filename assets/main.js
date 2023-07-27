@@ -5,33 +5,53 @@ const baseOpenWeatherMap = 'https://api.openweathermap.org/data/2.5/weather'
 const apiUnsplash = 'x63uFmemtwPVtI3fqORScmJd3J82UyM3s3hMtnVqCns'
 const baseUnsplash = 'https://api.unsplash.com/search/photos'
 
+const searchInput = document.querySelector('#search-input');
+const searchBar = document.querySelector('.search-bar');
+const mainSection = document.querySelector('.main-section');
+const bgUnsplash = document.querySelector('.container');
+const cityName = document.querySelector('.weather__city');
+const descWeather = document.querySelector('.weather__description');
+const imgWeather = document.querySelector('.weather__icon');
+const tempWeather = document.querySelector('.weather__temperature');
+const sunsetTime = document.querySelector('.js-sunset');
+const sunriseTime = document.querySelector('.js-sunrise');
+const windSpeed = document.querySelector('.js-wind-speed');
+const humidity = document.querySelector('.js-humidity');
+
+
 //fetch function getWeather
-const getWeather = async (city) => {
-    const query = `?q=${city}&appid=${apiKeyOpenWeatherMap}&units=metric`;
+const getWeather = async (weather) => {
+    const query = `?q=${weather}&appid=${apiKeyOpenWeatherMap}&units=metric`;
     return (await fetch(baseOpenWeatherMap + query)).json();
 }
 
-const btnWeather = document.querySelector('.js-getWeather');
-const weatherContent = document.querySelector('.content');
-const bgUnsplash = document.querySelector('.container');
-
-if (btnWeather) {
-    btnWeather.addEventListener('click', async () => {
-        const {weather} = await getWeather('London');
-        description = weather[0].description;
-        weatherContent.innerHTML= `${description}`;
-
-        const {results}= await getImages(`${description}`);
-        const randomNum = Math.floor(Math.random() * 10);
-        bgUnsplash.innerHTML= `<img src="${results[randomNum].urls.raw}" alt="${results[randomNum].alt_description}">`;
-        console.log(randomNum);
-        console.log(results);
-    }
-    )
-}
-
-// fetch function getImages form Unsplash by city
-const getImages = async (city) => {
+// fetch function getImageFromUnsplash form Unsplash by city
+const getImageFromUnsplash = async (city) => {
     const query = `?query=${city}&client_id=${apiUnsplash}`;
     return (await fetch(baseUnsplash + query)).json();
+}
+
+if (searchInput) {
+    searchInput.addEventListener('change', async () => {
+        const cityInput = searchInput.value;
+        searchInput.value = '';
+        const {weather,main,wind,sys,name} = await getWeather(cityInput);
+        descWeather.innerHTML = weather[0].description;
+        cityName.innerHTML = name;
+        imgWeather.setAttribute('src', `http://openweathermap.org/img/wn/${weather[0].icon}.png`);
+        tempWeather.innerHTML = `${Math.round(main.temp)}°C`;
+        sunriseTime.innerHTML = ` ${new Date(sys.sunrise * 1000).toLocaleTimeString('en-US')}`;
+        sunsetTime.innerHTML = ` ${new Date(sys.sunset * 1000).toLocaleTimeString('en-US')}`;
+        windSpeed.innerHTML = `${wind.speed} km/h`;
+        humidity.innerHTML = `${main.humidity} %`;
+
+        const {results} = await getImageFromUnsplash(`${weather[0].description}`);
+        const randomNum = Math.floor(Math.random() * 10);
+        const srcImg = results[randomNum].urls.regular;
+        //results[randomNum].urls.raw
+        mainSection.style.backgroundImage = `url(${srcImg})`;
+        bgUnsplash.style.backgroundImage = `url(${srcImg})`;
+    }
+    )
+
 }
