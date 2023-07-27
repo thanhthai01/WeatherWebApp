@@ -11,8 +11,10 @@
     <div class="container">
         <div class="main-section">
             <div class="search-bar">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="js-input search-input" placeholder="Enter city">
+                <div class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 32 32"><path fill="currentColor" d="m29 27.586l-7.552-7.552a11.018 11.018 0 1 0-1.414 1.414L27.586 29ZM4 13a9 9 0 1 1 9 9a9.01 9.01 0 0 1-9-9Z"></path></svg>
+                </div>
+                <input type="text" id="search-input" class="js-input search-input" placeholder="Enter city">
             </div>
             <div class="weather">
                 <div class="weather-top">
@@ -29,21 +31,21 @@
                     <div class="row">
                         <div class="item">
                             <div class="item__title">Sunrise</div>
-                            <div class="item__value">6:16</div>
+                            <div class="item__value js-sunrise">6:16</div>
                         </div>
                         <div class="item">
-                            <div class="item__title">Sunset</div>
-                            <div class="item__value">17:57</div>
+                            <div class="item__title ">Sunset</div>
+                            <div class="item__value js-sunset">17:57</div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="item">
                             <div class="item__title">Humidity</div>
-                            <div class="item__value">15%</div>
+                            <div class="item__value js-humidity">15%</div>
                         </div>
                         <div class="item">
                             <div class="item__title">Wind</div>
-                            <div class="item__value">1.86km/h</div>
+                            <div class="item__value js-wind-speed">1.86km/h</div>
                         </div>
                     </div>
                 </div>
