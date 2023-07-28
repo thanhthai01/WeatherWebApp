@@ -6,7 +6,7 @@ const apiUnsplash = 'x63uFmemtwPVtI3fqORScmJd3J82UyM3s3hMtnVqCns'
 const baseUnsplash = 'https://api.unsplash.com/search/photos'
 
 const searchInput = document.querySelector('#search-input');
-const searchBar = document.querySelector('.search-bar');
+
 const mainSection = document.querySelector('.main-section');
 const bgUnsplash = document.querySelector('.container');
 const cityName = document.querySelector('.weather__city');
@@ -48,10 +48,8 @@ if (searchInput) {
         const {results} = await getImageFromUnsplash(`${weather[0].description}`);
         const randomNum = Math.floor(Math.random() * 10);
         const srcImg = results[randomNum].urls.regular;
-        //results[randomNum].urls.raw
         mainSection.style.backgroundImage = `url(${srcImg})`;
         bgUnsplash.style.backgroundImage = `url(${srcImg})`;
     }
     )
-
 }
