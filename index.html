@@ -11,10 +11,10 @@
     <div class="container">
         <div class="main-section">
             <div class="search-bar">
-                <div class="search-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 32 32"><path fill="currentColor" d="m29 27.586l-7.552-7.552a11.018 11.018 0 1 0-1.414 1.414L27.586 29ZM4 13a9 9 0 1 1 9 9a9.01 9.01 0 0 1-9-9Z"></path></svg>
-                </div>
-                <input type="text" id="search-input" class="js-input search-input" placeholder="Enter city">
+                <input type="text" autocomplete="off" id="search-input" class="js-input search-input" >
+                <label for="text" class="search-label">
+                    <span class="search-content">Enter city</span>
+                </label>
             </div>
             <div class="weather">
                 <div class="weather-top">
@@ -49,12 +49,9 @@
                         </div>
                     </div>
                 </div>
-
              </div>
         </div>
 </div>
-    <!-- <p class="content"></p>
-    <div class="content1"></div> -->
     <script src="/assets/main.js"></script>
 </body>
 </html>
