@@ -6,7 +6,6 @@ const apiUnsplash = 'x63uFmemtwPVtI3fqORScmJd3J82UyM3s3hMtnVqCns'
 const baseUnsplash = 'https://api.unsplash.com/search/photos'
 
 const searchInput = document.querySelector('#search-input');
-const searchBar = document.querySelector('.search-bar');
 const mainSection = document.querySelector('.main-section');
 const bgUnsplash = document.querySelector('.container');
 const cityName = document.querySelector('.weather__city');
@@ -33,9 +32,16 @@ const getImageFromUnsplash = async (city) => {
 
 if (searchInput) {
     searchInput.addEventListener('change', async () => {
+        //lay du lieu tu input
         const cityInput = searchInput.value;
+
+        //reset input
         searchInput.value = '';
+
+        //lay du lieu thoi tiet tu API openweathermap
         const {weather,main,wind,sys,name} = await getWeather(cityInput);
+
+        //hien thi thoi tiet len giao dien
         descWeather.innerHTML = weather[0].description;
         cityName.innerHTML = name;
         imgWeather.setAttribute('src', `http://openweathermap.org/img/wn/${weather[0].icon}.png`);
@@ -45,13 +51,12 @@ if (searchInput) {
         windSpeed.innerHTML = `${wind.speed} km/h`;
         humidity.innerHTML = `${main.humidity} %`;
 
+        //Lay hinh anh tu Unsplash dua tren mo ta thoi tiet
         const {results} = await getImageFromUnsplash(`${weather[0].description}`);
         const randomNum = Math.floor(Math.random() * 10);
         const srcImg = results[randomNum].urls.regular;
-        //results[randomNum].urls.raw
         mainSection.style.backgroundImage = `url(${srcImg})`;
         bgUnsplash.style.backgroundImage = `url(${srcImg})`;
     }
     )
-
 }
