@@ -1,6 +1,8 @@
-const apiKeyOpenWeatherMap = 'YOUR_OPENWEATHERMAP_API_KEY';
+require('dotenv').config();
+
+const apiKeyOpenWeatherMap = process.env.WEATHEROPENMAP_API_KEY; // replace 'process.env.WEATHEROPENMAP_API_KEY' with your API key
 const baseOpenWeatherMap = 'https://api.openweathermap.org/data/2.5/weather'
-const apiUnsplash = 'YOUR_UNSPLASH_API_KEY';
+const apiUnsplash = process.env.UNSPLASH_API_KEY;  // replace 'process.env.UNSPLASH_API_KEY' with your API key
 const baseUnsplash = 'https://api.unsplash.com/search/photos'
 
 const root = document.querySelector(':root');
