@@ -22,6 +22,21 @@ const sunriseTime = document.querySelector('.js-sunrise');
 const windSpeed = document.querySelector('.js-wind-speed');
 const humidity = document.querySelector('.js-humidity');
 
+//trien khai throttle de han che so lan goi API
+const throttle = ( func, limit) => {
+    limit = limit || 1000;
+    let last = 0;
+    return () => {
+        const now = new Date().getTime();
+        if(now - last < limit){
+            return;
+        }
+        last = now;
+        func();
+    }
+}
+
+
 //fetch function getWeather
 const getWeather = async (weather) => {
       const query = `?q=${weather}&appid=${apiKeyOpenWeatherMap}&units=metric`;
@@ -49,47 +64,44 @@ const setProperty = async (value) => {
     root.style.setProperty('--CODRespond', `'${value}'`);
 }
 
-if (searchInput) {
-    searchInput.addEventListener('change', async () => {
-        //lay du lieu tu input
-        const cityInput = searchInput.value;
+const renderWeather = async () => {
+    //lay du lieu tu input
+    const cityInput = searchInput.value;
+    //reset input
+    searchInput.value = '';
 
-        //reset input
-        searchInput.value = '';
-
-        //lay du lieu thoi tiet tu API openweathermap
-        const [data,error] = await getWeather(cityInput);
-        if(error){
-            weather_section.style.display = 'none';
-            noCity_section.style.display = 'flex';
-            const { cod, message } = error;
-            codErr.innerHTML = `${cod}`;
-            setProperty(cod);
-            messageErr.innerHTML = `${message}`;
-        }
-        if(data ){
-            weather_section.style.display = 'flex';
-            noCity_section.style.display = 'none';
-
-            const {weather,main,wind,sys,name} = await data;
-            //hien thi thoi tiet len giao dien
-            descWeather.innerHTML = weather[0].description;
-            cityName.innerHTML = name;
-            imgWeather.setAttribute('src', `http://openweathermap.org/img/wn/${weather[0].icon}.png`);
-            tempWeather.innerHTML = `${Math.round(main.temp)}°C`;
-            sunriseTime.innerHTML = ` ${new Date(sys.sunrise * 1000).toLocaleTimeString('en-US')}`;
-            sunsetTime.innerHTML = ` ${new Date(sys.sunset * 1000).toLocaleTimeString('en-US')}`;
-            windSpeed.innerHTML = `${wind.speed} km/h`;
-            humidity.innerHTML = `${main.humidity} %`;
-
-            //Lay hinh anh tu Unsplash dua tren mo ta thoi tiet
-            const {results} = await getImageFromUnsplash(`${weather[0].description}`);
-            const randomNum = Math.floor(Math.random() * 10);
-            const srcImg = results[randomNum].urls.regular;
-            mainSection.style.backgroundImage = `url(${srcImg})`;
-            bgUnsplash.style.backgroundImage = `url(${srcImg})`;
-        }
-
+    //lay du lieu thoi tiet tu API openweathermap
+    const [data,error] = await getWeather(cityInput);
+    if(error){
+        weather_section.style.display = 'none';
+        noCity_section.style.display = 'flex';
+        const { cod, message } = error;
+        codErr.innerHTML = `${cod}`;
+        setProperty(cod);
+        messageErr.innerHTML = `${message}`;
     }
-    )
+    if(data ){
+        weather_section.style.display = 'flex';
+        noCity_section.style.display = 'none';
+
+        const {weather,main,wind,sys,name} = await data;
+        //hien thi thoi tiet len giao dien
+        descWeather.innerHTML = weather[0].description;
+        cityName.innerHTML = name;
+        imgWeather.setAttribute('src', `http://openweathermap.org/img/wn/${weather[0].icon}.png`);
+        tempWeather.innerHTML = `${Math.round(main.temp)}°C`;
+        sunriseTime.innerHTML = ` ${new Date(sys.sunrise * 1000).toLocaleTimeString('en-US')}`;
+        sunsetTime.innerHTML = ` ${new Date(sys.sunset * 1000).toLocaleTimeString('en-US')}`;
+        windSpeed.innerHTML = `${wind.speed} km/h`;
+        humidity.innerHTML = `${main.humidity} %`;
+
+        //Lay hinh anh tu Unsplash dua tren mo ta thoi tiet
+        const {results} = await getImageFromUnsplash(`${weather[0].description}`);
+        const randomNum = Math.floor(Math.random() * 10);
+        const srcImg = results[randomNum].urls.regular;
+        mainSection.style.backgroundImage = `url(${srcImg})`;
+        bgUnsplash.style.backgroundImage = `url(${srcImg})`;
+    }
 }
+
+searchInput.addEventListener('change', throttle(renderWeather, 1500));
