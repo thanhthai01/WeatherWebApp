@@ -24,7 +24,7 @@ const humidity = document.querySelector('.js-humidity');
 
 //trien khai throttle de han che so lan goi API
 const throttle = ( func, limit) => {
-    limit = limit || 1000;
+    limit = limit || 0;
     let last = 0;
     return () => {
         const now = new Date().getTime();
@@ -36,10 +36,9 @@ const throttle = ( func, limit) => {
     }
 }
 
-
 //fetch function getWeather
-const getWeather = async (weather) => {
-      const query = `?q=${weather}&appid=${apiKeyOpenWeatherMap}&units=metric`;
+const getWeather = async (city) => {
+      const query = `?q=${city}&appid=${apiKeyOpenWeatherMap}&units=metric`;
       const response = await fetch(baseOpenWeatherMap + query);
 
       if (!response.ok) {
@@ -52,10 +51,9 @@ const getWeather = async (weather) => {
       return [data, null];
   };
 
-
 // fetch function getImageFromUnsplash form Unsplash by city
-const getImageFromUnsplash = async (city) => {
-    const query = `?query=${city}&client_id=${apiUnsplash}`;
+const getImageFromUnsplash = async (weatherDesc) => {
+    const query = `?query=${weatherDesc}&client_id=${apiUnsplash}`;
     return (await fetch(baseUnsplash + query)).json();
 }
 
@@ -64,23 +62,32 @@ const setProperty = async (value) => {
     root.style.setProperty('--CODRespond', `'${value}'`);
 }
 
-const renderWeather = async () => {
-    //lay du lieu tu input
-    const cityInput = searchInput.value;
+//set data to html
+
+const renderWeather = async (cityInput) => {
+    // //get value from input
+    // const cityInput = searchInput.value.trim();
+
     //reset input
     searchInput.value = '';
 
-    //lay du lieu thoi tiet tu API openweathermap
+    //save data to local storage
+    localStorage.setItem('cityInput', JSON.stringify(cityInput));
+
+    //render data to html
     const [data,error] = await getWeather(cityInput);
+
     if(error){
         weather_section.style.display = 'none';
         noCity_section.style.display = 'flex';
+
         const { cod, message } = error;
         codErr.innerHTML = `${cod}`;
         setProperty(cod);
         messageErr.innerHTML = `${message}`;
     }
-    if(data ){
+
+    if(data){
         weather_section.style.display = 'flex';
         noCity_section.style.display = 'none';
 
@@ -104,4 +111,16 @@ const renderWeather = async () => {
     }
 }
 
-searchInput.addEventListener('change', throttle(renderWeather, 1500));
+
+searchInput.addEventListener('change', throttle(() => {
+    const cityInput = searchInput.value.trim();
+   renderWeather(cityInput);
+},3000));
+
+//save data to local storage
+document.addEventListener('DOMContentLoaded', () => {
+    const cityInput = JSON.parse(localStorage.getItem('cityInput'));
+    if(cityInput){
+        renderWeather(cityInput);
+    }
+});
