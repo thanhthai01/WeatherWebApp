@@ -1,8 +1,7 @@
 
-
-const apiKeyOpenWeatherMap = de28a82158f114ab57ba9880748d3fcd; // replace  with your API key
+const apiKeyOpenWeatherMap = 'de28a82158f114ab57ba9880748d3fcd'; // replace  with your API key
 const baseOpenWeatherMap = 'https://api.openweathermap.org/data/2.5/weather'
-const apiUnsplash = x63uFmemtwPVtI3fqORScmJd3J82UyM3s3hMtnVqCns ;  // replace  with your API key
+const apiUnsplash = 'x63uFmemtwPVtI3fqORScmJd3J82UyM3s3hMtnVqCns' ;  // replace  with your API key
 const baseUnsplash = 'https://api.unsplash.com/search/photos'
 
 const root = document.querySelector(':root');
