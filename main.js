@@ -1,9 +1,6 @@
-//API key de28a82158f114ab57ba9880748d3fcd
-//API call http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
-require('dotenv').config();
-const apiKeyOpenWeatherMap = process.env.API_KEY_OPEN_WEATHER_MAP;
+const apiKeyOpenWeatherMap = 'YOUR_OPENWEATHERMAP_API_KEY';
 const baseOpenWeatherMap = 'https://api.openweathermap.org/data/2.5/weather'
-const apiUnsplash = process.env.API_KEY_UNSPLASH;
+const apiUnsplash = 'YOUR_UNSPLASH_API_KEY';
 const baseUnsplash = 'https://api.unsplash.com/search/photos'
 
 const root = document.querySelector(':root');
