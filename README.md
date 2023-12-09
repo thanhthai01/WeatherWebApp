@@ -16,7 +16,7 @@ This is a simple weather application that fetches weather data from the OpenWeat
 -   If the city is not found or there's an error, an appropriate error message will be displayed.
 -   The application saves the last searched city to local storage and automatically loads it on page refresh.
 
-## DEMO
+## DEMO : https://weather-image.netlify.app
 
 1. Enter a city name
    
